@@ -88,8 +88,8 @@ aggregation_method: sum # how to combine the attention contexts of multiple enco
 max_train_size: 0        # maximum size of the training data (0 for unlimited)
 max_dev_size: 0          # maximum size of the dev data
 max_test_size: 0         # maximum size of the test data
-data_dir: ../dataDeep           # TODO directory containing the training data
-model_dir: ../dataDeep/model/sbt2nl         # TODO directory where the model will be saved (checkpoints and eval outputs)
+data_dir: ../data/           # TODO directory containing the training data
+model_dir: ../data/model/sbt2nl         # TODO directory where the model will be saved (checkpoints and eval outputs)
 train_prefix: train      # name of the training corpus
 script_dir: scripts      # directory where the scripts are kepts (in particular the scoring scripts)
 dev_prefix: [valid]        # names of the development corpora
