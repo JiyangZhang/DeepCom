@@ -344,7 +344,7 @@ class TranslationModel:
                     hypothesis, raw = hypothesis
 
                     hypotheses.append(hypothesis)
-                    reference = reference.strip().split('\t')[1]
+                    reference = reference.strip()
                     references.append(reference)
                     if output_file is not None:
                         if raw_output:
