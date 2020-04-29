@@ -88,8 +88,8 @@ aggregation_method: sum # how to combine the attention contexts of multiple enco
 max_train_size: 0        # maximum size of the training data (0 for unlimited)
 max_dev_size: 0          # maximum size of the dev data
 max_test_size: 0         # maximum size of the test data
-data_dir: ../data/           # TODO directory containing the training data
-model_dir: ../data/model/sbt2nl         # TODO directory where the model will be saved (checkpoints and eval outputs)
+data_dir: ../data           # directory containing the training data
+model_dir: ../data/model/sbtcode2nl         # directory where the model will be saved (checkpoints and eval outputs)
 train_prefix: train      # name of the training corpus
 script_dir: scripts      # directory where the scripts are kepts (in particular the scoring scripts)
 dev_prefix: [valid]        # names of the development corpora
@@ -120,14 +120,15 @@ embeddings_on_cpu: True  # save embeddings on main memory instead of GPU memory
 use_transfer: False
 
 encoders:                # this is a list (you can specify several encoders)
- # - name: code             # each encoder or decoder has a name (used for naming variables) and an extension (for files)
+ # - name: api             # each encoder or decoder has a name (used for naming variables) and an extension (for files)
   #  max_len: 20          # max_len of api
 #    attention_type: global
-  - name: sbt 
-    max_len: 444400
-#    attention_type: global
-
-
+  - name: code
+    max_len: 200
+    attention_type: global
+  - name: sbt
+    max_len: 200
+    attention_type: global
 decoders:                # Each encoder or decoder can redefine its own values for a number of parameters,
   - name: nl             # including `cell_size`, `embedding_size` and `attn_size`
     max_len: 30

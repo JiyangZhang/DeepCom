@@ -173,7 +173,7 @@ def sentence_to_token_ids(sentence, vocabulary, character_level=False):
         not as a string of words
     :return: a list of integers, the token-ids for the sentence.
     """
-    sentence = sentence.strip().split('\t')[1]
+    sentence = sentence.strip()
     sentence = sentence.rstrip('\n') if character_level else sentence.split()
     return [vocabulary.get(w, UNK_ID) for w in sentence]
 
