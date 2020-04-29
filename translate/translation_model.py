@@ -440,7 +440,7 @@ class TranslationModel:
 
         res = step_function(next(self.batch_iterator), update_model=True, use_sgd=self.training.use_sgd,
                             update_baseline=True)
-
+        # print out results
         self.training.loss += res.loss
         self.training.baseline_loss += getattr(res, 'baseline_loss', 0)
 
@@ -450,6 +450,12 @@ class TranslationModel:
         global_step = self.global_step.eval()
         epoch = self.epoch.eval()
 
+        loss = self.training.loss / self.training.steps
+        step_time = self.training.time / self.training.steps
+        summary = 'step {} epoch {} learning rate {:.3g} step-time {:.3f} loss {:.3f}'.format(
+                global_step, epoch + 1, self.learning_rate.eval(), step_time, loss)
+        utils.log(summary)
+        
         if decay_after_n_epoch is not None and self.batch_size * global_step >= decay_after_n_epoch * self.train_size:
             if decay_every_n_epoch is not None and (self.batch_size * (global_step - self.training.last_decay)
                                                         >= decay_every_n_epoch * self.train_size):
