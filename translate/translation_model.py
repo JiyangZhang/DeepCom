@@ -428,7 +428,7 @@ class TranslationModel:
                    max_epochs=0, eval_burn_in=0, decay_if_no_progress=None, decay_after_n_epoch=None,
                    decay_every_n_epoch=None, sgd_after_n_epoch=None, sgd_learning_rate=None, min_learning_rate=None,
                    loss_function='xent', **kwargs):
-        if min_learning_rate is not None and self.learning_rate.eval() < min_learning_rate:
+        if min_learning_rate is not None and self.learning_rate.eval() < float(min_learning_rate):
             utils.debug('learning rate is too small: stopping')
             raise utils.FinishedTrainingException
         if 0 < max_steps <= self.global_step.eval() or 0 < max_epochs <= self.epoch.eval():
