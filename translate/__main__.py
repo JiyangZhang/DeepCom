@@ -227,6 +227,7 @@ def main(args=None):
     random.seed(config.seed)
     tf.set_random_seed(config.tf_seed)
 
+    """
     device = None
     if config.no_gpu:
         device = '/cpu:0'
@@ -239,8 +240,8 @@ def main(args=None):
     utils.log('GPU using now: {}'.format(tf.test.gpu_device_name()))
 
     # hide other GPUs so that TensorFlow won't use memory on them
-    os.environ['CUDA_VISIBLE_DEVICES'] = '' if device_id is None else str(device_id)
-
+    #os.environ['CUDA_VISIBLE_DEVICES'] = '' if device_id is None else str(device_id)
+    """
     tf_config = tf.ConfigProto(log_device_placement=True, allow_soft_placement=True)
     tf_config.gpu_options.allow_growth = config.allow_growth
     tf_config.gpu_options.per_process_gpu_memory_fraction = config.mem_fraction
