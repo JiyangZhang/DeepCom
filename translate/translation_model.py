@@ -21,6 +21,9 @@ class TranslationModel:
         self.batch_size = batch_size
         self.character_level = {}
         self.binary = []
+        self.best_eval_score = 0
+        self.patience_tally = 0
+        self.impatience = kwargs.get("patience")
 
         for encoder_or_decoder in encoders + decoders:
             encoder_or_decoder.ext = encoder_or_decoder.ext or encoder_or_decoder.name
@@ -141,6 +144,7 @@ class TranslationModel:
             eval_loss /= sum(map(len, dev_batches))
 
             utils.log("  {} eval: loss {:.2f}".format(prefix, eval_loss))
+        return eval_loss
 
     def decode_sentence(self, sentence_tuple, remove_unk=False):
         return next(self.decode_batch([sentence_tuple], remove_unk))
@@ -508,11 +512,20 @@ class TranslationModel:
             kwargs_['output'] = output
             score, *_ = self.evaluate(on_dev=True, **kwargs_)
             self.training.scores.append((global_step, score))
+            if score > self.best_eval_score:
+                self.best_eval_score = score
+                self.patience_tally = 0
+            else:
+                self.patience_tally += 1
 
         if steps_per_eval and global_step % steps_per_eval == 0:
             raise utils.EvalException
         elif steps_per_checkpoint and global_step % steps_per_checkpoint == 0:
             raise utils.CheckpointException
+
+        if self.patience_tally > self.impatience:
+            utils.log("Early Stopping.")
+            raise utils.FinishedTrainingException
 
     def manage_best_checkpoints(self, step, score):
         score_filename = os.path.join(self.checkpoint_dir, 'scores.txt')
