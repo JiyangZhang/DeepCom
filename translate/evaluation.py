@@ -3,7 +3,7 @@ from nltk.translate.bleu_score import SmoothingFunction
 
 def nltk_sentence_bleu(hypothesis, reference, order=4):
     cc = SmoothingFunction()
-    return nltk.translate.bleu([reference], hypothesis, smoothing_function=cc.method4)
+    return nltk.translate.bleu([reference], hypothesis, smoothing_function=cc.method2)
 
 
 def nltk_corpus_bleu(hypotheses, references, order=4):
@@ -21,7 +21,7 @@ def nltk_corpus_bleu(hypotheses, references, order=4):
             print("length is less than 1!")
             score = 0
         else:
-            score = nltk.translate.bleu([ref], hyp, smoothing_function=cc.method4)
+            score = nltk.translate.bleu([ref], hyp, smoothing_function=cc.method2)
         total_score += score
         count += 1
 
