@@ -1,12 +1,11 @@
 from nltk.translate.bleu_score import sentence_bleu, SmoothingFunction
-from seutil import LoggingUtils, BashUtils, IOUtils
-
+import sys
 
 class Bleu:
 
 
     @classmethod
-    def compute_bleu(cls, references, hypotheses):
+    def compute_bleu(cls, references:str, hypotheses: str, exp: str) -> int:
         with open(references, 'r') as fr, open(hypotheses, 'r') as fh:
             refs = fr.readlines()
             hyps = fh.readlines()
@@ -19,7 +18,14 @@ class Bleu:
                                                         smoothing_function=SmoothingFunction().method2,
                                                         auto_reweigh=True))
         score = 100 * sum(bleu_4_sentence_scores) / float(len(bleu_4_sentence_scores))
-        results = {"Bleu": score}
-        IOUtils.dump()
 
-        return
+        bleu_result_file = f"{exp}/bleu.json"
+        result = {"Bleu": score}
+        IOUtils.dump(bleu_result_file, result)
+        return score
+
+if __name__ == "__main__":
+    ref_file = sys.argv[1]
+    hyp_file = sys.argv[2]
+    exp_dir = sys.argv[3]
+    Bleu.compute_bleu(ref_file, hyp_file, exp_dir)

@@ -241,7 +241,7 @@ def main(args=None):
     # hide other GPUs so that TensorFlow won't use memory on them
     os.environ['CUDA_VISIBLE_DEVICES'] = '' if device_id is None else str(device_id)
 
-    tf_config = tf.ConfigProto(log_device_placement=True, allow_soft_placement=True)
+    tf_config = tf.ConfigProto(log_device_placement=False, allow_soft_placement=True)
     tf_config.gpu_options.allow_growth = config.allow_growth
     tf_config.gpu_options.per_process_gpu_memory_fraction = config.mem_fraction
 
