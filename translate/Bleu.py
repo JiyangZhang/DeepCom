@@ -1,5 +1,6 @@
 from nltk.translate.bleu_score import sentence_bleu, SmoothingFunction
 import sys
+from seutil import IOUtils
 
 class Bleu:
 
@@ -19,8 +20,8 @@ class Bleu:
                                                         auto_reweigh=True))
         score = 100 * sum(bleu_4_sentence_scores) / float(len(bleu_4_sentence_scores))
 
-        bleu_result_file = f"{exp}/bleu.json"
-        result = {"Bleu": score}
+        bleu_result_file = f"{exp}/test_result.json"
+        result = {"bleu": score}
         IOUtils.dump(bleu_result_file, result)
         return score
 
