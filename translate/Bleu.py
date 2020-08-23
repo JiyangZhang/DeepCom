@@ -6,7 +6,7 @@ class Bleu:
 
 
     @classmethod
-    def compute_bleu(cls, references:str, hypotheses: str, exp: str) -> int:
+    def compute_bleu(cls, references:str, hypotheses: str, test_result_file: str) -> int:
         with open(references, 'r') as fr, open(hypotheses, 'r') as fh:
             refs = fr.readlines()
             hyps = fh.readlines()
@@ -20,13 +20,12 @@ class Bleu:
                                                         auto_reweigh=True))
         score = 100 * sum(bleu_4_sentence_scores) / float(len(bleu_4_sentence_scores))
 
-        bleu_result_file = f"{exp}/test_result.json"
         result = {"bleu": score}
-        IOUtils.dump(bleu_result_file, result)
+        IOUtils.dump(test_result_file, result)
         return score
 
 if __name__ == "__main__":
     ref_file = sys.argv[1]
     hyp_file = sys.argv[2]
-    exp_dir = sys.argv[3]
-    Bleu.compute_bleu(ref_file, hyp_file, exp_dir)
+    test_result_file = sys.argv[3]
+    Bleu.compute_bleu(ref_file, hyp_file, test_result_file)
