@@ -500,7 +500,7 @@ class TranslationModel:
             self.training.losses.append(loss)
             self.training.loss, self.training.time, self.training.steps, self.training.baseline_loss = 0, 0, 0, 0
             eval_loss = self.eval_step()
-            log = {"epoch": int(epoch + 1), "step": int(global_step), "train_loss": loss, "eval_loss": eval_loss}
+            log = {"epoch": int(epoch), "step": int(global_step), "train_loss": loss, "eval_loss": eval_loss}
             self.train_traces.append(log)
             with open(self.train_log_file, "w+") as f:
                 json.dump(self.train_traces, f)
