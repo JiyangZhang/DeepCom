@@ -27,6 +27,7 @@ class TranslationModel:
         self.patience_tally = 0
         self.impatience = kwargs.get("patience")
         self.train_log_file = kwargs.get("train_log")
+        self.train_traces = []
         assert self.train_log_file is not None
 
         for encoder_or_decoder in encoders + decoders:
@@ -499,9 +500,10 @@ class TranslationModel:
             self.training.losses.append(loss)
             self.training.loss, self.training.time, self.training.steps, self.training.baseline_loss = 0, 0, 0, 0
             eval_loss = self.eval_step()
-            log = {"epoch": str(epoch + 1), "step": str(global_step), "train_loss": loss, "eval_loss": eval_loss}
+            log = {"epoch": epoch + 1, "step": global_step, "train_loss": loss, "eval_loss": eval_loss}
+            self.train_traces.append(log)
             with open(self.train_log_file, "w+") as f:
-                json.dump(log, f)
+                json.dump(self.train_traces, f)
 
         if steps_per_eval and global_step % steps_per_eval == 0 and 0 <= eval_burn_in <= global_step:
             eval_dir = 'eval' if self.name is None else 'eval_{}'.format(self.name)
