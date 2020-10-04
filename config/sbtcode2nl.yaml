@@ -20,6 +20,7 @@ keep_best: 5             # number of best checkpoints to keep (based on BLEU sco
 feed_previous: 0.0       # randomly feed prev output instead of ground truth to decoder during training ([0,1] proba)
 optimizer: sgd          # which training algorithm to use ('sgd', 'adadelta', or 'adam')
 moving_average: null     # TODO
+patience: 10            # if valid loss does not decrease, model training will early stop
 
 # dropout
 pervasive_dropout: False  # same dropout mask for all elements in same batch/same sequence (see Gal, 2015)

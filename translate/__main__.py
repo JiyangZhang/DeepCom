@@ -81,6 +81,8 @@ parser.add_argument('--align-encoder-id', type=int, default=0,
 parser.add_argument('--tf-seed', type=int)
 parser.add_argument('--seed', type=int)
 
+parser.add_argument("--train-log", help="the directory to write the training log to.")
+
 
 def load_api_params(tf_config, graph, api_config="../config/api2nl.yaml"):
     params = {}

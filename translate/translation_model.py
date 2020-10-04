@@ -11,6 +11,8 @@ from seq2seq_model import Seq2SeqModel
 from subprocess import Popen, PIPE
 import time
 import ipdb
+import json
+
 
 class TranslationModel:
     def __init__(self, encoders, decoders, checkpoint_dir, learning_rate, learning_rate_decay_factor,
@@ -24,6 +26,8 @@ class TranslationModel:
         self.best_eval_score = 0
         self.patience_tally = 0
         self.impatience = kwargs.get("patience")
+        self.train_log_file = kwargs.get("train_log")
+        assert self.train_log_file is not None
 
         for encoder_or_decoder in encoders + decoders:
             encoder_or_decoder.ext = encoder_or_decoder.ext or encoder_or_decoder.name
@@ -494,7 +498,10 @@ class TranslationModel:
 
             self.training.losses.append(loss)
             self.training.loss, self.training.time, self.training.steps, self.training.baseline_loss = 0, 0, 0, 0
-            self.eval_step()
+            eval_loss = self.eval_step()
+            log = {"epoch": str(epoch + 1), "step": str(global_step), "train_loss": loss, "eval_loss": eval_loss}
+            with open(self.train_log_file, "w+") as f:
+                json.dump(log, f)
 
         if steps_per_eval and global_step % steps_per_eval == 0 and 0 <= eval_burn_in <= global_step:
             eval_dir = 'eval' if self.name is None else 'eval_{}'.format(self.name)
